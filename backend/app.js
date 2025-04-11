@@ -5,7 +5,7 @@ require("dotenv").config();
 const { connectDB } = require("./config/db");
 
 // Importuj routery
-const productRoutes = require('./routes/products');
+const productRoutes = require("./routes/products");
 const categoryRoutes = require("./routes/categories");
 const reservationRoutes = require("./routes/reservations");
 
@@ -41,15 +41,33 @@ app.use((req, res, next) => {
 	res.status(404).json({ message: "Nie znaleziono zasobu" });
 });
 
-app.use((err, req, res, next) => {
-	console.error(err.stack);
-	res
-		.status(500)
-		.json({
-			message: "Wystąpił błąd serwera",
-			error: process.env.NODE_ENV === "development" ? err.message : undefined,
-		});
+app.use((req, res) => {
+	res.status(404).json({
+		message: "Nie znaleziono zasobu",
+		request: {
+			method: req.method,
+			url: req.originalUrl,
+			params: req.params,
+			query: req.query,
+		},
+		suggestions: [
+			"Sprawdź poprawność adresu URL",
+			"Zweryfikuj dokumentację API pod adresem /api-docs",
+			"Skontaktuj się z supportem: support@sklepmedyczny.pl",
+		],
+	});
 });
+
+// Globalny handler błędów
+app.use((err, req, res, next) => {
+	console.error('[ERROR]', new Date().toISOString(), err);
+	res.status(500).json({
+	  message: "Wewnętrzny błąd serwera",
+	  errorId: uuidv4(),
+	  details: process.env.NODE_ENV === 'development' ? err.message : undefined,
+	  documentation: "https://github.com/notWeev/serwis_medyczny/wiki/Error-Handling"
+	});
+  });
 
 // Uruchomienie serwera
 app.listen(port, () => {

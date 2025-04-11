@@ -2,18 +2,17 @@ const Reservation = require('../models/Reservation');
 
 exports.getAllReservations = async (req, res) => {
   try {
-    // Tylko dla administratora (zakładamy, że mamy stałe hasło admin)
-    const adminPassword = req.headers['admin-key'];
-    if (adminPassword !== process.env.ADMIN_KEY) {
-      return res.status(403).json({ message: 'Brak uprawnień do wykonania tej operacji' });
-    }
-    
     const reservations = await Reservation.getAll();
     res.status(200).json(reservations);
   } catch (error) {
-    res.status(500).json({ message: 'Błąd podczas pobierania rezerwacji', error: error.message });
+    res.status(500).json({ 
+      message: 'Błąd podczas pobierania rezerwacji',
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 };
+
 
 exports.getReservationById = async (req, res) => {
   try {

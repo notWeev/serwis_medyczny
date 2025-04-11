@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getProducts } from '../services/productService';
-import ProductCard from '../components/ProductCard';
+// import ProductCard from '../components/ProductCard';
 
-function ProductsPage() {
+export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

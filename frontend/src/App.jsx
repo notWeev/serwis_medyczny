@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
-import ProductDetailPage from './pages/ProductDetailPage';
+// import ProductDetailPage from './pages/ProductDetailPage';
 // import LoginPage from './pages/LoginPage';
 // import RegisterPage from './pages/RegisterPage';
-import NotFoundPage from './pages/NotFoundPage';
-import Layout from './components/Layout';
+// import NotFoundPage from './pages/NotFoundPage';
+// import Layout from './components/Layout';
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <Routes>

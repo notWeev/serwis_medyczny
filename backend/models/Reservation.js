@@ -31,7 +31,7 @@ class Reservation {
       const itemsResult = await sql.query`
         SELECT pr.*, p.nazwa, p.cena
         FROM PozycjaRezerwacji pr
-        JOIN Products p ON pr.produktid = p.ProductID
+        JOIN Produkt p ON pr.produktid = p.ProduktID
         WHERE pr.rezerwacjaid = ${id}
       `;
       
@@ -54,7 +54,7 @@ class Reservation {
       // Sprawdź, czy wszystkie produkty są dostępne w wymaganej ilości
       for (const item of pozycje) {
         const productResult = await new sql.Request(transaction).query`
-          SELECT stanmagazynowy FROM Products WHERE ProductID = ${item.produktid}
+          SELECT stanmagazynowy FROM Produkt WHERE ProduktID = ${item.produktid}
         `;
         
         if (productResult.recordset.length === 0) {
@@ -83,7 +83,7 @@ class Reservation {
       for (const item of pozycje) {
         // Pobierz cenę produktu
         const productResult = await new sql.Request(transaction).query`
-          SELECT cena FROM Products WHERE ProductID = ${item.produktid}
+          SELECT cena FROM Produkt WHERE ProduktID = ${item.produktid}
         `;
         
         const productPrice = productResult.recordset[0].cena;
@@ -97,9 +97,9 @@ class Reservation {
         
         // Zaktualizuj stan magazynowy
         await new sql.Request(transaction).query`
-          UPDATE Products
+          UPDATE Produkt
           SET stanmagazynowy = stanmagazynowy - ${item.ilosc}
-          WHERE ProductID = ${item.produktid}
+          WHERE ProduktID = ${item.produktid}
         `;
         
         totalAmount += itemTotal;
@@ -148,9 +148,9 @@ class Reservation {
       // Przywróć stany magazynowe
       for (const item of itemsResult.recordset) {
         await new sql.Request(transaction).query`
-          UPDATE Products
+          UPDATE Produkt
           SET stanmagazynowy = stanmagazynowy + ${item.ilosc}
-          WHERE ProductID = ${item.produktid}
+          WHERE ProduktID = ${item.produktid}
         `;
       }
       

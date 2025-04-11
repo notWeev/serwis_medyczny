@@ -4,11 +4,15 @@ const reservationController = require('../controllers/reservationController');
 
 // Publiczne endpointy
 router.post('/', reservationController.createReservation);
+router.get('/', reservationController.getAllReservations); 
 
-// Endpointy dla administratorów (zabezpieczone kluczem admin)
-router.get('/', reservationController.getAllReservations);
+// Tymczasowo publiczny
 router.get('/:id', reservationController.getReservationById);
-router.put('/:id/status', reservationController.updateReservationStatus);
-router.delete('/:id', reservationController.deleteReservation);
+
+// Endpointy dla administratorów
+router.get('/', adminMiddleware, reservationController.getAllReservations);
+router.get('/:id', adminMiddleware, reservationController.getReservationById);
+router.put('/:id/status', adminMiddleware, reservationController.updateReservationStatus);
+router.delete('/:id', adminMiddleware, reservationController.deleteReservation);
 
 module.exports = router;

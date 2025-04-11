@@ -5,7 +5,7 @@ require("dotenv").config();
 const { connectDB } = require("./config/db");
 
 // Importuj routery
-const productRoutes = require("./routes/products");
+const productRoutes = require('./routes/products');
 const categoryRoutes = require("./routes/categories");
 const reservationRoutes = require("./routes/reservations");
 

@@ -9,7 +9,7 @@ class Reservation {
 
 	static async getById(id) {
 		try {
-		  const reservationResult = await sql.query`
+			const reservationResult = await sql.query`
 			SELECT 
 			  r.ID_rezerwacji,
 			  r.Data_rezerwacji,
@@ -23,12 +23,12 @@ class Reservation {
 			JOIN Klient k ON r.ID_klienta = k.ID_klienta
 			WHERE r.ID_rezerwacji = ${id}
 		  `;
-		  
-		  if (reservationResult.recordset.length === 0) return null;
-	  
-		  const reservation = reservationResult.recordset[0];
-	  
-		  const itemsResult = await sql.query`
+
+			if (reservationResult.recordset.length === 0) return null;
+
+			const reservation = reservationResult.recordset[0];
+
+			const itemsResult = await sql.query`
 			SELECT 
 			  pr.ID_produktu,
 			  p.Nazwa,
@@ -38,15 +38,14 @@ class Reservation {
 			JOIN Produkt p ON pr.ID_produktu = p.ID_produktu
 			WHERE pr.ID_rezerwacji = ${id}
 		  `;
-		  
-		  reservation.Pozycje = itemsResult.recordset;
-	  
-		  return reservation;
+
+			reservation.Pozycje = itemsResult.recordset;
+
+			return reservation;
 		} catch (error) {
-		  throw new Error(`Błąd pobierania rezerwacji: ${error.message}`);
+			throw new Error(`Błąd pobierania rezerwacji: ${error.message}`);
 		}
-	  }
-	  
+	}
 
 	static async create(reservationData) {
 		const transaction = new sql.Transaction();

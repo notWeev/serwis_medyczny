@@ -1,8 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const reservationController = require('../controllers/reservationController');
+const reservationController = require("../controllers/reservationController");
 
-router.post('/', reservationController.createReservation);
-router.get('/', reservationController.getAllReservations);
+router.get("/", reservationController.getAllReservations);
+router.get("/:id", reservationController.getReservationById);
+router.post("/", reservationController.createReservation);
 
 module.exports = router;

@@ -13,27 +13,54 @@ exports.getAllReservations = async (req, res) => {
 	}
 };
 
+// exports.getReservationById = async (req, res) => {
+// 	try {
+// 		const reservationId = req.params.id;
+// 		const reservation = await Reservation.getById(reservationId);
+
+// 		if (!reservation) {
+// 			return res.status(404).json({
+// 				message: "Rezerwacja o podanym ID nie istnieje",
+// 				details: `Szukane ID: ${reservationId}`,
+// 			});
+// 		}
+
+// 		res.status(200).json(reservation);
+// 	} catch (error) {
+// 		console.error("Błąd w getReservationById:", error);
+// 		res.status(500).json({
+// 			message: "Błąd serwera podczas pobierania rezerwacji",
+// 			error: process.env.NODE_ENV === "development" ? error.message : undefined,
+// 		});
+// 	}
+// };
+
 exports.getReservationById = async (req, res) => {
 	try {
-		const reservationId = req.params.id;
-		const reservation = await Reservation.getById(reservationId);
-
-		if (!reservation) {
-			return res.status(404).json({
-				message: "Rezerwacja o podanym ID nie istnieje",
-				details: `Szukane ID: ${reservationId}`,
-			});
-		}
-
-		res.status(200).json(reservation);
-	} catch (error) {
-		console.error("Błąd w getReservationById:", error);
-		res.status(500).json({
-			message: "Błąd serwera podczas pobierania rezerwacji",
-			error: process.env.NODE_ENV === "development" ? error.message : undefined,
+	  const reservationId = req.params.id;
+	  console.log(`Szukam rezerwacji o ID: ${reservationId}`);
+	  
+	  const reservation = await Reservation.getById(reservationId);
+	  console.log('Wynik zapytania:', reservation);
+  
+	  if (!reservation) {
+		console.log(`Nie znaleziono rezerwacji o ID: ${reservationId}`);
+		return res.status(404).json({
+		  message: "Rezerwacja o podanym ID nie istnieje",
+		  details: `Szukane ID: ${reservationId}`,
 		});
+	  }
+  
+	  res.status(200).json(reservation);
+	} catch (error) {
+	  console.error("Błąd w getReservationById:", error);
+	  res.status(500).json({
+		message: "Błąd serwera podczas pobierania rezerwacji",
+		error: error.message,
+		stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
+	  });
 	}
-};
+  };
 
 exports.createReservation = async (req, res) => {
 	try {

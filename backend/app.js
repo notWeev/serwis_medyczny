@@ -7,7 +7,7 @@ const { connectDB } = require("./config/db");
 // Importuj routery
 const productRoutes = require("./routes/products");
 const categoryRoutes = require("./routes/categories");
-const reservationRoutes = require("./routes/reservations");
+const reservationRoutes = require('./routes/reservations');
 
 const app = express();
 const port = process.env.PORT || 3001;
